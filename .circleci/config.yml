@@ -1,0 +1,42 @@
+version: 2.1
+orbs:
+  aws-code-deploy: circleci/aws-code-deploy@dev:alpha
+  awscli: circleci/aws-cli@0.1.22
+  orb-tools: circleci/orb-tools@9.0
+jobs:
+  pr_check:
+    docker:
+      - image: circleci/openjdk:8-jdk
+        environment:
+          TEST_DATABASE_URL: postgresql://postgres@localhost:5432/postgres
+      - image: circleci/postgres:9.6.5-alpine
+    working_directory: ~/Test
+        
+    steps:
+      - checkout
+      - run: sudo apt-get update
+      - run:
+          name: Build webappwithout running tests
+          command: mvn install -Dmaven.test.skip=true
+      - run: 
+          name: Test webapp
+          command: mvn clean package
+      -run:
+          name: Deploy to Lambda
+          command: aws lambda update-function-code --function-name testFunction --zip-file fileb://./resources/sns-0.0.1-SNAPSHOT.jar --region us-east-1    
+      - store_artifacts:
+          path: src/main/resources
+          destination: build/lib
+
+
+workflows:
+  version: 2
+  pr_check_workflow:
+    jobs:
+    - pr_check:
+        filters:
+            branches:
+              only:
+                - master
+ 
+  
