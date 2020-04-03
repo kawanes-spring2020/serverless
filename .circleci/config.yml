@@ -14,6 +14,10 @@ jobs:
         
     steps:
       - checkout
+      - awscli/setup:
+          aws-access-key-id: aws_access_key
+          aws-secret-access-key: aws_secret_key
+          aws-region: aws_region
       - run: sudo apt-get update
       - run:
           name: Build webappwithout running tests
