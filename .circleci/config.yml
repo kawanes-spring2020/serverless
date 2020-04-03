@@ -27,7 +27,7 @@ jobs:
           command: mvn clean package
       - run:
           name: Deploy to Lambda
-          command: aws lambda update-function-code --function-name testFunction --zip-file fileb://./src/main/java/com/lamda/sns/App.java --region us-east-1    
+          command: aws lambda update-function-code --function-name testFunction --zip-file fileb://./resources/sns-0.0.1-SNAPSHOT.jar --region us-east-1    
       - store_artifacts:
           path: src/main/resources
           destination: build/lib
