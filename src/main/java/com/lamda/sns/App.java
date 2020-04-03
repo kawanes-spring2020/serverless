@@ -49,7 +49,7 @@ import com.amazonaws.services.dynamodbv2.model.GetItemResult;
             public  Object handleRequest(SNSEvent request, Context context){
                 try {
                     
-                    AmazonDynamoDB dynamoclient = AmazonDynamoDBClientBuilder.standard().withCredentials(new InstanceProfileCredentialsProvider(true)).build();
+                    AmazonDynamoDB dynamoclient = AmazonDynamoDBClientBuilder.standard().build();
                     
                     long epoch = (System.currentTimeMillis()/1000)+3600;
                     
@@ -88,7 +88,7 @@ import com.amazonaws.services.dynamodbv2.model.GetItemResult;
 		                    request11.setItem(map);
 		                    PutItemResult result = dynamoclient.putItem(request11);
 		                    
-		                    AmazonSimpleEmailService client =  AmazonSimpleEmailServiceClientBuilder.standard().withCredentials(new InstanceProfileCredentialsProvider(true)).build();
+		                    AmazonSimpleEmailService client =  AmazonSimpleEmailServiceClientBuilder.standard().build();
 		                   
 		                     
 		        
