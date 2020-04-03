@@ -12,7 +12,8 @@ package com.lamda.sns;
     import com.amazonaws.services.lambda.runtime.RequestHandler;
     import com.amazonaws.auth.AWSStaticCredentialsProvider;
     import com.amazonaws.auth.BasicAWSCredentials;
-    import com.amazonaws.regions.Regions;
+import com.amazonaws.auth.InstanceProfileCredentialsProvider;
+import com.amazonaws.regions.Regions;
     import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
     import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
     import com.amazonaws.services.dynamodbv2.document.DynamoDB;
@@ -47,8 +48,8 @@ import com.amazonaws.services.dynamodbv2.model.GetItemResult;
         
             public  Object handleRequest(SNSEvent request, Context context){
                 try {
-                    BasicAWSCredentials bAWSc = new BasicAWSCredentials("AKIASYMCGX2UCG3IF4Z6", "W1nSdcATQg9wcKgT92uHu6Pjyb6yUcTLO5PLlYeq");
-                    AmazonDynamoDB dynamoclient = AmazonDynamoDBClientBuilder.standard().withRegion(Regions.US_EAST_1).withCredentials(new AWSStaticCredentialsProvider(bAWSc)).build();
+                    
+                    AmazonDynamoDB dynamoclient = AmazonDynamoDBClientBuilder.standard().withCredentials(new InstanceProfileCredentialsProvider(true)).build();
                     
                     long epoch = (System.currentTimeMillis()/1000)+3600;
                     
@@ -87,7 +88,7 @@ import com.amazonaws.services.dynamodbv2.model.GetItemResult;
 		                    request11.setItem(map);
 		                    PutItemResult result = dynamoclient.putItem(request11);
 		                    
-		                    AmazonSimpleEmailService client =  AmazonSimpleEmailServiceClientBuilder.standard().withRegion(Regions.US_EAST_1).withCredentials(new AWSStaticCredentialsProvider(bAWSc)).build();
+		                    AmazonSimpleEmailService client =  AmazonSimpleEmailServiceClientBuilder.standard().withCredentials(new InstanceProfileCredentialsProvider(true)).build();
 		                   
 		                     
 		        
@@ -115,3 +116,4 @@ import com.amazonaws.services.dynamodbv2.model.GetItemResult;
              }
         
     }
+
