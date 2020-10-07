@@ -1,2 +1,2 @@
-fdsf# serverless
+# serverless
 AWS Lambda Repository
